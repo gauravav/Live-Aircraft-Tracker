@@ -3,14 +3,47 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Live Aircraft Tracker</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Live Aircraft Tracker (DFW Airport)</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+
+        #map {
+            width: 80%;
+            height: 500px;
+            margin: auto;
+            border: 2px solid black;
+        }
+
+        #audio-container {
+            margin-top: 20px;
+        }
+
+        audio {
+            width: 80%;
+            height: 30px;
+            outline: none;
+        }
+    </style>
 </head>
 <body>
     <h1>Live Aircraft Tracker (DFW Airport)</h1>
+    
+    <!-- Map container -->
     <div id="map"></div>
-
+    
+    <!-- Live ATC Audio Player -->
+    <div id="audio-container">
+        <h2>Live ATC for DFW Airport</h2>
+        <audio controls>
+            <source src="http://d.liveatc.net/kdfw1_app_fin_17c" type="audio/mpeg">
+            Your browser does not support the audio element.
+        </audio>
+    </div>
+    
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <script src="app.js"></script>
 </body>

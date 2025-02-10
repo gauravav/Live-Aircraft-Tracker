@@ -15,10 +15,9 @@ body {
     text-align: center;
 }
 
-.plane-icon div {
-    display: inline-block;
+.plane-icon img {
+    display: block;
+    margin: auto;
     transform-origin: center center;
-    font-size: 20px;
-    text-align: center;
-    color: red; /* Optional: Adjust icon color */
 }
+

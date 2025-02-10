@@ -1,8 +1,10 @@
-const map = L.map("map").setView([32.94, -97.0], 11);
+const map = L.map("map").setView([32.88, -97.0], 11);
 
 L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
     attribution: '&copy; OpenStreetMap contributors'
 }).addTo(map);
+
+let aircraftMarkers = []; // Correct variable name
 
 async function fetchAircraftData() {
     try {
@@ -14,31 +16,33 @@ async function fetchAircraftData() {
     }
 }
 
-let aircraftMarkers = [];
-
 function updateMap(aircraftList) {
+    // Remove existing markers
     aircraftMarkers.forEach(marker => map.removeLayer(marker));
     aircraftMarkers = [];
 
+    // Add new markers
     aircraftList.forEach(aircraft => {
-        const icon = L.divIcon({
-            className: "aircraft-icon",
-            html: `✈️`,
-            iconSize: [25, 25]
+        // Create a custom icon with rotation based on true_track
+        const planeIcon = L.divIcon({
+            className: "plane-icon",
+            html: `<div style="transform: rotate(${aircraft.true_track || 0}deg);">✈️</div>`,
+            iconSize: [30, 30],
         });
 
-        const marker = L.marker([aircraft.latitude, aircraft.longitude], { icon }).addTo(map);
+        const marker = L.marker([aircraft.latitude, aircraft.longitude], { icon: planeIcon }).addTo(map);
         marker.bindPopup(`
             <b>Callsign:</b> ${aircraft.callsign} <br>
             <b>Country:</b> ${aircraft.origin_country} <br>
             <b>Altitude:</b> ${aircraft.altitude || "Unknown"} meters <br>
             <b>Speed:</b> ${aircraft.velocity || "Unknown"} m/s <br>
-            <b>Direction:</b> ${aircraft.true_track || "Unknown"}°
+            <b>Direction:</b> ${aircraft.true_track || "Unknown"}° <br>
+            <b>On Ground:</b> ${aircraft.on_ground ? "Yes" : "No"}
         `);
 
         aircraftMarkers.push(marker);
     });
 }
 
-setInterval(fetchAircraftData, 5000);
+setInterval(fetchAircraftData, 10000); // Refresh every 10 seconds
 fetchAircraftData();
